@@ -1,0 +1,48 @@
+apiVersion: "prescaler.kloia.com/v1"
+kind: "Scaleset"
+metadata:
+  name: "sock-shop"
+spec:
+  namespacename: "sock-shop"
+  deploymentname: "front-end"
+  hpaname: "front-end-hpa"
+  defaultreplicas: 2
+---
+apiVersion: "prescaler.kloia.com/v1"
+kind: "Criticalteam"
+metadata:
+  name: "galatasaray"
+spec:
+  criticalteamid: 439
+---
+apiVersion: "prescaler.kloia.com/v1"
+kind: "Criticalteam"
+metadata:
+  name: "trabzonspor"
+spec:
+  criticalteamid: 425
+---
+apiVersion: "prescaler.kloia.com/v1"
+kind: "Criticalteam"
+metadata:
+  name: "bjk"
+spec:
+  criticalteamid: 2311
+---
+apiVersion: "prescaler.kloia.com/v1"
+kind: "Criticalteam"
+metadata:
+  name: "fenerbahce"
+spec:
+  criticalteamid: 4633
+---
+apiVersion: "prescaler.kloia.com/v1"
+kind: "Percent"
+metadata:
+  name: "sock-shop"
+  namespace: sock-shop
+spec:
+  minpercent: 20
+  maxpercent: 50
+  criticalminpercent: 40
+  criticalmaxpercent: 70
