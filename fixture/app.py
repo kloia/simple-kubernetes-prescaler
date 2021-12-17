@@ -1,14 +1,14 @@
 from datetime import datetime
-from sys import maxsize
+from sys import maxsize, stdout, exit
 import requests
-from flask import Flask
+import logging
 from settings import *
 
 
-app = Flask(__name__)
+logger = logging.getLogger() 
 
 def get_matches():
-    app.logger.info("Getting matches from fixture service")
+    logging.info("Getting matches from fixture service")
     matches = requests.get("https://apigateway.beinsports.com.tr/api/fixture/rewriteid/current/super-lig")
     match_data = matches.json()["Data"]
 
@@ -23,9 +23,8 @@ def get_delta_hours(match):
         delta = datetime.now() - datetime.fromisoformat(match_date)
         delta_hours = (delta.days * SECONDS_IN_DAY + delta.seconds)/360
     except Exception as e:
-        app.logger.exception("An error occured when caculating estimated time to match match id=%s " %match.get("id"))
+        logging.exception("An error occured when caculating estimated time to match match id=%s " %match.get("id"))
         delta_hours = maxsize
-
     return delta_hours
 
 
@@ -39,7 +38,6 @@ def get_teams_id_of_match(match):
     return home_team_id, away_team_id
 
 
-@app.route("/check_matches")
 def check_incoming_matches():
     matches = get_matches()
     
@@ -50,8 +48,22 @@ def check_incoming_matches():
             home_team_id, away_team_id = get_teams_id_of_match(match)
             
             if home_team_id in BIG_TEAMS or away_team_id in BIG_TEAMS:
-                app.logger.info("Crusial match found! Match id: %d" %match.get("id"))
+                logging.info("Crusial match found! Match id: %d" %match.get("id"))
                 return CRUCIAL_MATCH_EXIST
-            app.logger.info("Match found! Match id: %s" %match.get("id"))
+            logging.info("Match found! Match id: %s" %match.get("id"))
             result = MATCH_EXIST
     return result
+
+
+if __name__ == '__main__':
+    handler = logging.StreamHandler(stdout)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    
+    # logger.setLevel(logging.DEBUG)
+    # handler.setLevel(logging.DEBUG)
+    # handler.setFormatter(formatter)
+    # logger.addHandler(handler)
+
+    print(check_incoming_matches())
+    
+    
