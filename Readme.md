@@ -1,7 +1,7 @@
 This repo contains Simple Kubernetes PreScaler code, and kubernetes manifests.
 
 Scaler works with Custom Resource Definitions and scales kubernetes workloads using HPA.
-Default configuration gets scaling data from Turkey’s Champions League’s fixture services and scale pods during match times.
+Default configuration gets scaling data from Turkey’s Football League’s fixture services and scale pods during match times.
 
 ## How to use PreScaler
 
