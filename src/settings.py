@@ -13,8 +13,5 @@ MATCH_EXIST = "1"
 CRUCIAL_MATCH_EXIST = "2"
 MATCH_NOT_EXIST = "0"
 
-# Specify big teams as comma seperated string. ex: 318,452,666
-# If BIG_TEAMS environment not exist than BIG_TEAMS equals GS, TS, BJK, FB by default
-BIG_TEAMS = [int(i) for i in environ.get("BIG_TEAMS", "439,425,2311,4633").split(',')]
-
+WAIT_FOR = 60
 SECONDS_IN_DAY = 24 * 60 * 60

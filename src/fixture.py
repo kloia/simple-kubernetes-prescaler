@@ -4,7 +4,6 @@ import requests
 import logging
 from settings import *
 
-
 logger = logging.getLogger() 
 
 def get_matches():
@@ -38,7 +37,7 @@ def get_teams_id_of_match(match):
     return home_team_id, away_team_id
 
 
-def check_incoming_matches():
+def check_incoming_matches(big_teams):
     matches = get_matches()
     
     result = MATCH_NOT_EXIST
@@ -47,23 +46,11 @@ def check_incoming_matches():
         if delta_hours < HOURS_INTERVAL["feature"] and delta_hours > HOURS_INTERVAL["past"]*-1:
             home_team_id, away_team_id = get_teams_id_of_match(match)
             
-            if home_team_id in BIG_TEAMS or away_team_id in BIG_TEAMS:
+            if home_team_id in big_teams or away_team_id in big_teams:
                 logging.info("Crusial match found! Match id: %d" %match.get("id"))
                 return CRUCIAL_MATCH_EXIST
             logging.info("Match found! Match id: %s" %match.get("id"))
             result = MATCH_EXIST
     return result
-
-
-if __name__ == '__main__':
-    handler = logging.StreamHandler(stdout)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    
-    # logger.setLevel(logging.DEBUG)
-    # handler.setLevel(logging.DEBUG)
-    # handler.setFormatter(formatter)
-    # logger.addHandler(handler)
-
-    print(check_incoming_matches())
     
     
